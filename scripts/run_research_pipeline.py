@@ -22,10 +22,27 @@ from src.dealer_model import DealerParams, hedge_quantity, quote_adjustment
 
 
 def fetch_minute(ts_code: str, start_date: str, end_date: str) -> pd.DataFrame:
-    df = ts.pro_bar(ts_code=ts_code, start_date=start_date, end_date=end_date, freq="1min", asset="FD", adj=None)
-    if df is None or df.empty:
+    start = pd.to_datetime(start_date, format="%Y%m%d")
+    end = pd.to_datetime(end_date, format="%Y%m%d")
+    frames = []
+    for month_start in pd.date_range(start=start.replace(day=1), end=end, freq="MS"):
+        chunk_start = max(month_start, start)
+        chunk_end = min(month_start + pd.offsets.MonthEnd(0), end)
+        df = ts.pro_bar(
+            ts_code=ts_code,
+            start_date=chunk_start.strftime("%Y%m%d"),
+            end_date=chunk_end.strftime("%Y%m%d"),
+            freq="1min",
+            asset="FD",
+            adj=None,
+        )
+        if df is not None and not df.empty:
+            frames.append(df)
+    if not frames:
         raise RuntimeError("No minute data returned from Tushare.")
+    df = pd.concat(frames, ignore_index=True)
     df = df.sort_values("trade_time").reset_index(drop=True)
+    df = df.drop_duplicates(subset=["ts_code", "trade_time"], keep="last").reset_index(drop=True)
     df["trade_time"] = pd.to_datetime(df["trade_time"])
     return df
 
@@ -123,7 +140,7 @@ def plot(paths: pd.DataFrame, out_dir: Path) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--ts-code", default="510300.SH")
-    parser.add_argument("--start-date", default="20260601")
+    parser.add_argument("--start-date", default="20230101")
     parser.add_argument("--end-date", default="20260605")
     parser.add_argument("--seed", type=int, default=20260706)
     args = parser.parse_args()

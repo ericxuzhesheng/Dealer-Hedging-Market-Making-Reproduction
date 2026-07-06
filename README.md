@@ -21,7 +21,7 @@
 
 本项目复现 Barzykin, Bergault 与 Guéant 的前沿论文 **Algorithmic market making in dealer markets with hedging and market impact** 的核心思想：dealer 不必永远只靠客户报价 internalize 库存风险；当库存超出合理区间时，可以通过外部市场对冲，把风险外部化，但要付出市场冲击成本。
 
-使用 Tushare `510300.SH` 沪深 300 ETF 的 1 分钟数据做代理回测。窗口为 `2026-06-01 09:30:00` 到 `2026-06-04 15:00:00`，共 964 条分钟 bar。带 hedge 的 dealer 库存标准差为 **3.18**，低于纯 internalizer 的 **17.73**；NAV 波动为 **0.46**，低于纯 internalizer 的 **1.80**。代价是最终 NAV 从 **5.89** 降至 **1.68**。
+使用 Tushare `510300.SH` 沪深 300 ETF 的 1 分钟数据做代理回测。窗口为 `2023-01-03 09:30:00` 到 `2026-06-29 15:00:00`，共 **196,415** 条分钟 bar。带 hedge 的 dealer 库存标准差为 **5.24**，低于纯 internalizer 的 **144.60**；NAV 波动为 **108.46**，低于纯 internalizer 的 **1193.06**。代价是最终 NAV 从 **4111.29** 降至 **375.82**。
 
 ### 快速导航
 
@@ -70,8 +70,8 @@
 | 字段 | 数值 |
 |---|---:|
 | 标的 | `510300.SH` 沪深 300 ETF |
-| 窗口 | `2026-06-01 09:30:00` 至 `2026-06-04 15:00:00` |
-| 分钟观测数 | 964 |
+| 窗口 | `2023-01-03 09:30:00` 至 `2026-06-29 15:00:00` |
+| 分钟观测数 | 196,415 |
 | Level2 | 不可用，当前为分钟 bar + 客户流代理 |
 | hedge 阈值 | 8 |
 | hedge 比例 | 55% 的超额库存 |
@@ -84,8 +84,8 @@
 
 | 策略 | 最终 NAV | NAV std | 库存均值 | 库存 std | 平均绝对库存 | 客户成交 | hedge 次数 |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| 带 hedge 的 dealer | 1.68 | **0.46** | -4.81 | **3.18** | **5.14** | 210 | 54 |
-| 纯 internalizer | **5.89** | 1.80 | -30.20 | 17.73 | 30.35 | 210 | 0 |
+| 带 hedge 的 dealer | 375.82 | **108.46** | 0.05 | **5.24** | **4.54** | 43,008 | 9,137 |
+| 纯 internalizer | **4111.29** | 1193.06 | 23.96 | 144.60 | 120.02 | 43,008 | 0 |
 
 结果解释：外部 hedge 降低库存风险和 NAV 波动，但牺牲短窗口利润。这个风险-收益取舍正是论文的核心机制。
 
@@ -125,8 +125,8 @@ pip install -r requirements.txt
 
 python scripts/run_research_pipeline.py \
   --ts-code 510300.SH \
-  --start-date 20260601 \
-  --end-date 20260605
+  --start-date 20230101 \
+  --end-date 20260630
 
 python -m pytest -q
 ```
@@ -139,7 +139,7 @@ python -m pytest -q
 
 This project reproduces the core idea of Barzykin, Bergault, and Guéant, **Algorithmic market making in dealer markets with hedging and market impact**: a dealer can internalize client flow inside an inventory band, but externalize inventory through hedging once the position becomes too large.
 
-On 964 Tushare one-minute bars for `510300.SH`, the hedging dealer reduces inventory standard deviation to **3.18** versus **17.73** for a pure internalizer. NAV volatility falls to **0.46** versus **1.80**, while final NAV is lower because hedging pays market-impact costs.
+On **196,415** Tushare one-minute bars for `510300.SH`, the hedging dealer reduces inventory standard deviation to **5.24** versus **144.60** for a pure internalizer. NAV volatility falls to **108.46** versus **1193.06**, while final NAV is lower because hedging pays market-impact costs.
 
 ### Navigation
 
@@ -188,8 +188,8 @@ On 964 Tushare one-minute bars for `510300.SH`, the hedging dealer reduces inven
 | Field | Value |
 |---|---:|
 | Asset | `510300.SH` CSI 300 ETF |
-| Window | `2026-06-01 09:30:00` to `2026-06-04 15:00:00` |
-| Minute bars | 964 |
+| Window | `2023-01-03 09:30:00` to `2026-06-29 15:00:00` |
+| Minute bars | 196,415 |
 | Level2 | Not available; this is a minute-bar and client-flow proxy |
 | Hedge threshold | 8 |
 | Hedge fraction | 55% of excess inventory |
@@ -202,8 +202,8 @@ The project uses minute-level data as required, but it is not a Level2 dealer-ma
 
 | Strategy | Final NAV | NAV Std | Inventory Mean | Inventory Std | Mean Abs Inventory | Client Fills | Hedge Trades |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| Dealer with hedging | 1.68 | **0.46** | -4.81 | **3.18** | **5.14** | 210 | 54 |
-| Pure internalizer | **5.89** | 1.80 | -30.20 | 17.73 | 30.35 | 210 | 0 |
+| Dealer with hedging | 375.82 | **108.46** | 0.05 | **5.24** | **4.54** | 43,008 | 9,137 |
+| Pure internalizer | **4111.29** | 1193.06 | 23.96 | 144.60 | 120.02 | 43,008 | 0 |
 
 ### Key Figures
 
@@ -236,7 +236,7 @@ The project uses minute-level data as required, but it is not a Level2 dealer-ma
 
 ```bash
 pip install -r requirements.txt
-python scripts/run_research_pipeline.py --ts-code 510300.SH --start-date 20260601 --end-date 20260605
+python scripts/run_research_pipeline.py --ts-code 510300.SH --start-date 20230101 --end-date 20260630
 python -m pytest -q
 ```
 

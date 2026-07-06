@@ -3,9 +3,9 @@
   "source": "https://arxiv.org/abs/2106.06974",
   "data": {
     "ts_code": "510300.SH",
-    "start_time": "2026-06-01 09:30:00",
-    "end_time": "2026-06-04 15:00:00",
-    "observations": 964,
+    "start_time": "2023-01-03 09:30:00",
+    "end_time": "2026-06-29 15:00:00",
+    "observations": 196415,
     "level2_available": false,
     "level2_note": "Tushare minute bars are used; true dealer quotes and inter-dealer hedge executions are proxied."
   },
@@ -20,21 +20,21 @@
   },
   "summaries": {
     "hedging_dealer": {
-      "final_nav": 1.6792999999999925,
-      "nav_std": 0.4628544104435691,
-      "inventory_mean": -4.812045690550363,
-      "inventory_std": 3.1804660202583914,
-      "inventory_abs_mean": 5.144340602284528,
-      "client_fills": 210,
-      "hedge_trades": 54
+      "final_nav": 375.82150000000115,
+      "nav_std": 108.46430694896821,
+      "inventory_mean": 0.05435457757593654,
+      "inventory_std": 5.235745531291299,
+      "inventory_abs_mean": 4.5445538505401855,
+      "client_fills": 43008,
+      "hedge_trades": 9137
     },
     "pure_internalizer": {
-      "final_nav": 5.8922000000000025,
-      "nav_std": 1.7977163110220824,
-      "inventory_mean": -30.19730010384216,
-      "inventory_std": 17.729854105173082,
-      "inventory_abs_mean": 30.350986500519213,
-      "client_fills": 210,
+      "final_nav": 4111.285400000065,
+      "nav_std": 1193.0616367520129,
+      "inventory_mean": 23.95553779262171,
+      "inventory_std": 144.60493644039042,
+      "inventory_abs_mean": 120.01563534167626,
+      "client_fills": 43008,
       "hedge_trades": 0
     }
   }
