@@ -3,3 +3,7 @@ __pycache__/
 .pytest_cache/
 .venv/
 *.log
+*.aux
+*.out
+*.toc
+data/processed/hftbacktest_feed_synth.npz

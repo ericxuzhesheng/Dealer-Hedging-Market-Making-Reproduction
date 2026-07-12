@@ -1,0 +1,35 @@
+{
+  "framework": "hftbacktest 2.4.x",
+  "engine_features": [
+    "order latency",
+    "risk-adverse queue model",
+    "post-only limit orders",
+    "maker/taker fees"
+  ],
+  "feed": {
+    "type": "synthetic_l2",
+    "path": "data\\processed\\hftbacktest_feed_synth.npz",
+    "duration_seconds": 60,
+    "boundary": "Framework-valid matching test; not historical 510300 Level2 replay."
+  },
+  "strategies": {
+    "hedging_dealer": {
+      "final_pnl": 1.9588815999994125,
+      "equity_std": 1.9963391216131101,
+      "position_mean": 0.07172643869891576,
+      "position_std": 2.6020187720245636,
+      "position_absmax": 7.0,
+      "n_trades": 1005,
+      "hedge_urgency_events": 80
+    },
+    "pure_internalizer": {
+      "final_pnl": 3.232543399999621,
+      "equity_std": 2.246570420282269,
+      "position_mean": 0.19683069224353628,
+      "position_std": 2.804968182103132,
+      "position_absmax": 8.0,
+      "n_trades": 1037,
+      "hedge_urgency_events": 0
+    }
+  }
+}

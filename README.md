@@ -245,3 +245,10 @@ python -m pytest -q
 ## License
 
 MIT-style research reproduction. Add a formal license file before public reuse.
+
+## hftbacktest Framework Run (2026-07-12)
+
+Run `python scripts/run_hftbacktest.py`. The engine handles latency, queueing,
+post-only orders, matching, and fees, and writes to `results/hftbacktest/`.
+The hedge implementation is a quote-urgency mechanism on synthetic L2, not a
+claim of historical inter-dealer hedge executions.
